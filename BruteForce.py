@@ -1,5 +1,10 @@
 # -*- coding: utf-8 -*-
 import itertools
+import time
+
+from beautifultable import BeautifulTable
+
+from instances import m3, m4, m5, m6, m7, m8, m9, m10
 
 # PYTHON MAIN
 # https://www.guru99.com/learn-python-main-function-with-examples-understand-main.html
@@ -18,209 +23,90 @@ import itertools
 # https://stackoverflow.com/questions/32726673/combinations-with-entries-unique-in-row-and-column
 # https://www.geeksforgeeks.org/job-assignment-problem-using-branch-and-bound/
 
+# pip install beautifultable
 
 # HACER: caso basico, n maquinas, n trabajos, un trabajo por maquina
-import numpy as np
-from numpy.ma import array
-
-
-class item():
-    myInstances = []
-
-    def __init__(self, val, worker):
-        self.val = val
-        self.worker = worker
-        self.__class__.myInstances.append(self)
-
-    def __repr__(self):
-        return "(%d, %s)" % (self.val, self.worker)
-
-    def get_list_by_worker(worker_key):
-        temp = []
-        for x in item.myInstances:
-            if x.worker == worker_key:
-                temp.append(x)
-        return temp
+from utils import locate_min
 
 
 def main():
-    print("Job Shop Scheduling con Fuerza Bruta")
+    start = time.time()
+    print(">>> Job Shop Scheduling con Fuerza Bruta <<<")
 
-    A = [9, 2, 7, 8]
-    B = [6, 4, 3, 7]
-    C = [5, 8, 1, 8]
-    D = [7, 6, 9, 4]
+    set = m4
+    m_size = len(set)
 
-    for a in A:
-        x = item(a, "A")
+    table = BeautifulTable()
 
-    for b in B:
-        x = item(b, "B")
+    headers = []
+    for x in range(len(set)):
+        headers.append(str(x))
 
-    for c in C:
-        x = item(c, "C")
+    table.column_headers = headers
 
-    for d in D:
-        x = item(d, "D")
+    for row in set:
+        table.append_row(row)
 
-    # for obj in item.myInstances:
-    #     print("val: %d , worker: %s" % (obj.val, obj.worker))
-    #
-    # print(A)
-    #
-    # print('get list by worker A: ', item.get_list_by_worker("B"))
-    # tdd = []
-    # for xx in item.get_list_by_worker("A"):
-    #     for xxx in item.get_list_by_worker("B")[1:]:
-    #         for xxxx in item.get_list_by_worker("C")[2:]:
-    #             for xxxxx in item.get_list_by_worker("D")[3:]:
-    #                 tdd.append((xx, xxx, xxxx, xxxxx))
-    #                 print(xx, xxx, xxxx, xxxxx)
+    print(table)
 
-    # print(tdd)
+    debug = False
 
-    # for x in tdd:
-    #     sum = 0
-    #     print(x)
-    #     for y in x:
-    #         sum = sum + y.val
-    #     print("sum: ", sum)
-
-    B = [[(1, "A"), (2, "A"), (19, "A")],
-         [(12, "B"), (5, "B"), (6, "B")],
-         [(7, "C"), (8, "C"), (15, "C")]]
-
-    C = [[1, 2, 3],
-         [4, 5, 6],
-         [7, 8, 9]]
-
-    n = len(B)
+    n = len(set)
     index_list = range(n)
     perms = itertools.permutations(index_list)
-    combinations = [[B[i][p[i]] for i in index_list] for p in perms]
-    print("combinaciones: ", combinations)
+    combinations = [[set[i][p[i]] for i in index_list] for p in perms]
+    print("Combinaciones posibles: ", len(combinations))
 
+    print("----- Lista de combinaciones posibles -----")
     sum_combinations = []
     for combination in combinations:
         sum = 0
         for element in combination:
             sum = element[0] + sum
         sum_combinations.append(sum)
-        print("combinacion: %s, tiempo total: %s" % (combination, sum))
+        if debug:
+            print("Combinacion: %s, tiempo total de secuencia: %s" % (combination, sum))
 
-    print("index: ", sum_combinations.index(min(sum_combinations)))
-    print("Costo minimo: ", min(sum_combinations))
-    combinacion_minima = combinations[sum_combinations.index(min(sum_combinations))]
-    print("Combinacion: ", combinacion_minima)
+    print("----- Mejor(es) resultados: -----")
+
     find_min_value, find_min_indexes = locate_min(sum_combinations)
-    print("Min value: ", find_min_value)
-    print("Index(es)min value: ", find_min_indexes)
+    print("Tiempo minimo posible: ", find_min_value)
+    print("Posiciones combinaciones tiempo minimo: ", find_min_indexes)
 
+    sum_total_perms = 0
     for min_index in find_min_indexes:
-        print("Combinacion: ", combinations[min_index])
+        print("Combinación: ", )
 
+        table_seq = BeautifulTable()
+        seq_headers = []
+        for x in range(len(combinations[min_index])):
+            seq_headers.append("Secuencia " + str(x + 1))
+        table_seq.column_headers = seq_headers
+        table_seq.append_row(combinations[min_index])
+        print(table_seq)
 
-def locate_min(sum_list):
-    min_indexes = []
-    smallest = min(sum_list)
-    for index, element in enumerate(sum_list):
-        if smallest == element:  # check if this element is the minimum_value
-            min_indexes.append(index)  # add the index to the list if it is
+        # Obtener permutaciones de las combinaciones con menor tiempo
+        permutations = list(itertools.permutations(combinations[min_index]))
+        if m_size <= 4:
+            print("Permutaciones: ")
+            # print(permutations)
+            for t in permutations:
 
-    return smallest, min_indexes
+                table_seq = BeautifulTable()
+                seq_headers = []
+                for x in range(len(t)):
+                    seq_headers.append("Secuencia " + str(x + 1))
+                table_seq.column_headers = seq_headers
+                table_seq.append_row(t)
+                print(table_seq)
 
-    # sum_combinacines = []
-    # for x in combinaciones:
-    #     sum = 0
-    #     print("combinacion: ", x)
-    #     for y in x:
-    #         sum = y.val + sum
-    #     sum_combinacines.append(sum)
-    #     print("sum: ", sum)
-    #     print("------")
-    # print("Suma de combinaciones posibles: ", sum_combinacines)
+            print("------")
+            sum_total_perms = sum_total_perms + len(permutations)
 
-    # combinaciones1 = list(itertools.product([1], [5, 8]))
-    # print("combinaciones1: ", combinaciones1)
-    #
-    # combinaciones2 = list(itertools.product(combinaciones1, [9]))
-    # print("combinaciones2: ", combinaciones2)
+    print("Posibles secuencias de la combinacion(permutaciones): ", sum_total_perms)
 
-    # for row_index, row in enumerate(B):
-    #     for col_index, val in enumerate(row):
-    #         new = remove_row(B, row_index)
-    #         print("removed rows: ", new)
-    #         new = remove_columns(new, col_index-1)
-    #         print("remove cols: ", new)
-    #         new = []
-
-
-list = []
-
-
-def tddd(matrix):
-    matrix_rows = len(matrix)
-    if matrix_rows == 0:
-        return matrix
-    else:
-        print("-Fila seleccionada: ", matrix[0])
-        seq = []
-        for index, a in enumerate(matrix[0]):
-            E = a
-            print("--Seleccionado E: ", E)
-            seq.append(E)
-            new_matrix = remove_row(matrix, 0)
-            new_matrix = nremove_column(new_matrix, index)
-            print("--- Sig matriz: ", new_matrix)
-            print("seq: ", seq)
-            tddd(new_matrix)
-        print("seq: ", seq)
-        list.append(seq)
-    print("list: ", list)
-    return list
-
-
-def nremove_column(matrix, index):
-    return [(x[0:index] + x[index + 1:]) for x in matrix]
-
-
-def remove_row(original_matrix, element_row_index):
-    """
-    Remover fila de matriz
-    :param original_matrix:
-    :param element_row_index: row to remove
-    :return:
-    """
-    new_matrix = []
-    if (len(original_matrix)) >= element_row_index:
-        new_matrix = original_matrix[:]  # Hacer una copia de la matriz original
-        new_matrix.remove(original_matrix[element_row_index])
-        # print("Matriz con filas removidas: ", new_matrix)
-    else:
-        print("Indice no coincide con tamaño de matriz")
-    return new_matrix
-
-
-def remove_columns(original_matrix, element_column_index):
-    new_matrix = original_matrix[:]
-    for x in new_matrix:
-        print("element_column_index:", element_column_index)
-        x.remove(x[element_column_index])
-        print("Matriz con columnas removidas: ", new_matrix)
-    return new_matrix
-
-
-def new_matrix(matrix, index):
-    newTemp = [x.remove[x.index] for x in matrix]
-
-
-def remove_column(matrix, column):
-    return [r.pop(column) for r in matrix]
-
-
-def is_squared(matrix):
-    # Check that all rows have the correct length, not just the first one
-    return all(len(row) == len(matrix) for row in matrix)
+    end = time.time()
+    print("Tiempo de ejecucion del programa: ", end - start)
 
 
 # print("--M-- | T1 | T2 | T3 | T4")
@@ -299,16 +185,6 @@ def is_squared(matrix):
 # # #
 # # for y in sum_combinacines:
 #     print("hola")
-
-
-# TODO iterar por columnas o por fila
-def special_combinations(matrix):
-    combs = []
-    print("hola")
-
-    for x in matrix:
-        for y in x:
-            pass
 
 
 if __name__ == "__main__":
