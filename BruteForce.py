@@ -33,7 +33,7 @@ def main():
     start = time.time()
     print(">>> Job Shop Scheduling con Fuerza Bruta <<<")
 
-    set = m4
+    set = m10
     m_size = len(set)
 
     table = BeautifulTable()
@@ -87,11 +87,12 @@ def main():
 
         # Obtener permutaciones de las combinaciones con menor tiempo
         permutations = list(itertools.permutations(combinations[min_index]))
-        if m_size <= 4:
-            print("Permutaciones: ")
-            # print(permutations)
-            for t in permutations:
 
+        print("Permutaciones: ")
+        # print(permutations)
+        for t in permutations:
+
+            if m_size <= 4:
                 table_seq = BeautifulTable()
                 seq_headers = []
                 for x in range(len(t)):
@@ -100,13 +101,13 @@ def main():
                 table_seq.append_row(t)
                 print(table_seq)
 
-            print("------")
-            sum_total_perms = sum_total_perms + len(permutations)
+        print("------")
+        sum_total_perms = sum_total_perms + len(permutations)
 
     print("Posibles secuencias de la combinacion(permutaciones): ", sum_total_perms)
 
     end = time.time()
-    print("Tiempo de ejecucion del programa: ", end - start)
+    print("Tiempo de ejecucion del programa: %d ms " % ((end - start) * 1000))
 
 
 # print("--M-- | T1 | T2 | T3 | T4")
