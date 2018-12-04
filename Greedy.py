@@ -13,6 +13,9 @@
 
 # ++++
 # https://stackoverflow.com/questions/36072577/complexity-of-a-greedy-assignment-algorithm
+
+# Job Sequencing Problem with Deadline
+# https://www.dyclassroom.com/greedy-algorithm/job-sequencing-problem-with-deadline
 import time
 
 from instances import m10, m3
