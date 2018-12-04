@@ -8,6 +8,10 @@
 
 # https://www.geeksforgeeks.org/hungarian-algorithm-assignment-problem-set-1-introduction/
 
+# https://stackoverflow.com/questions/23379660/hungarian-algorithm-finding-minimum-number-of-lines-to-cover-zeroes
+
+# https://github.com/amirbawab/Hungarian-Algorithm
+
 def main():
     pass
 
