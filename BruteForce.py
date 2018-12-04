@@ -20,6 +20,7 @@ import itertools
 
 
 # HACER: caso basico, n maquinas, n trabajos, un trabajo por maquina
+import numpy as np
 from numpy.ma import array
 
 
@@ -85,18 +86,59 @@ def main():
     #         sum = sum + y.val
     #     print("sum: ", sum)
 
-    input = [A, B, C, D]
+    B = [[(1, "A"), (2, "A"), (19, "A")],
+         [(12, "B"), (5, "B"), (6, "B")],
+         [(7, "C"), (8, "C"), (15, "C")]]
 
-    finish = False
-
-    B = [[1, 2, 3],
+    C = [[1, 2, 3],
          [4, 5, 6],
          [7, 8, 9]]
 
-    print("array: ")
-    print(B)
+    n = len(B)
+    index_list = range(n)
+    perms = itertools.permutations(index_list)
+    combinations = [[B[i][p[i]] for i in index_list] for p in perms]
+    print("combinaciones: ", combinations)
 
-    print(tddd(B))
+    sum_combinations = []
+    for combination in combinations:
+        sum = 0
+        for element in combination:
+            sum = element[0] + sum
+        sum_combinations.append(sum)
+        print("combinacion: %s, tiempo total: %s" % (combination, sum))
+
+    print("index: ", sum_combinations.index(min(sum_combinations)))
+    print("Costo minimo: ", min(sum_combinations))
+    combinacion_minima = combinations[sum_combinations.index(min(sum_combinations))]
+    print("Combinacion: ", combinacion_minima)
+    find_min_value, find_min_indexes = locate_min(sum_combinations)
+    print("Min value: ", find_min_value)
+    print("Index(es)min value: ", find_min_indexes)
+
+    for min_index in find_min_indexes:
+        print("Combinacion: ", combinations[min_index])
+
+
+def locate_min(sum_list):
+    min_indexes = []
+    smallest = min(sum_list)
+    for index, element in enumerate(sum_list):
+        if smallest == element:  # check if this element is the minimum_value
+            min_indexes.append(index)  # add the index to the list if it is
+
+    return smallest, min_indexes
+
+    # sum_combinacines = []
+    # for x in combinaciones:
+    #     sum = 0
+    #     print("combinacion: ", x)
+    #     for y in x:
+    #         sum = y.val + sum
+    #     sum_combinacines.append(sum)
+    #     print("sum: ", sum)
+    #     print("------")
+    # print("Suma de combinaciones posibles: ", sum_combinacines)
 
     # combinaciones1 = list(itertools.product([1], [5, 8]))
     # print("combinaciones1: ", combinaciones1)
@@ -115,9 +157,10 @@ def main():
 
 list = []
 
+
 def tddd(matrix):
     matrix_rows = len(matrix)
-    if matrix_rows == 1:
+    if matrix_rows == 0:
         return matrix
     else:
         print("-Fila seleccionada: ", matrix[0])
@@ -129,6 +172,7 @@ def tddd(matrix):
             new_matrix = remove_row(matrix, 0)
             new_matrix = nremove_column(new_matrix, index)
             print("--- Sig matriz: ", new_matrix)
+            print("seq: ", seq)
             tddd(new_matrix)
         print("seq: ", seq)
         list.append(seq)
@@ -151,7 +195,7 @@ def remove_row(original_matrix, element_row_index):
     if (len(original_matrix)) >= element_row_index:
         new_matrix = original_matrix[:]  # Hacer una copia de la matriz original
         new_matrix.remove(original_matrix[element_row_index])
-        #print("Matriz con filas removidas: ", new_matrix)
+        # print("Matriz con filas removidas: ", new_matrix)
     else:
         print("Indice no coincide con tamaño de matriz")
     return new_matrix
