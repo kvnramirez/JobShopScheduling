@@ -1,8 +1,9 @@
 # -*- coding: utf-8 -*-
 import copy
 import itertools
+import time
 
-from instances import i1, i2
+from instances import i1, i2, i3
 
 
 class Sequence:
@@ -68,6 +69,7 @@ def get_base_solution(jobs_list, machines_number):
         for j in get_jobs_by_machine(x, jobs_list):
             sum = sum + j.duration
         sum_each.append(sum)
+    print(sum_each)
     return get_jobs_by_machine(sum_each.index(min(sum_each)), jobs_list), sum_each.index(min(sum_each))
 
 
@@ -75,7 +77,20 @@ def get_min_next_machine():
     pass
 
 
+def sum_jobs_and_min_index(machine):
+    sum_each = []
+    sum = 0
+    for x in machine.jobs:
+        for elem in x:
+            # print("elem: ", elem)
+            sum = sum + elem.duration
+        sum_each.append(sum)
+        machine.total_duration = sum
+    # print("aqui", sum_each)
+
+
 def main():
+    start = time.time()
     print("Job Shop Scheduling con Fuerza Bruta")
 
     input_matrix = i2
@@ -92,20 +107,19 @@ def main():
     # print(len(list(itertools.permutations(get_jobs_by_machine(0, list_jobs)))))
 
     # Obtener solucion base con menor duracion en secuencia y calcular sus permutaciones
-    base_solution, base_solution_machine_id = get_base_solution(list_jobs, machines_number)
-    base_solution_perms = list(itertools.permutations(base_solution))
-    print("base solution perms: ", base_solution_perms)
-    print("base solution index: ", base_solution_machine_id)
+    # base_solution, base_solution_machine_id = get_base_solution(list_jobs, machines_number)
+    # base_solution_perms = list(itertools.permutations(base_solution))
+    # print("base solution perms: ", base_solution_perms)
+    # print("base solution index: ", base_solution_machine_id)
 
     perms_by_machine = []
-    perms_by_machine.append(base_solution_perms)
+    # perms_by_machine.append(base_solution_perms)
 
     print("Perms by machine generating....")
-    for x in [i for i in range(0, machines_number) if i != base_solution_machine_id]:
+    for x in range(machines_number):
         perms_by_machine.append(list(itertools.permutations(get_jobs_by_machine(x, list_jobs))))
 
-    print("Perms by machine generated.")
-    print(perms_by_machine)
+    print("Perms by machine generated:", perms_by_machine)
     print("Machine count: ", len(perms_by_machine))
 
     print("Generating possible sequences:")
@@ -139,7 +153,15 @@ def main():
 
     print("\nScheduling each sequence... ")
     for full_sequence in sequences_list:
+        for machine in full_sequence.machines:
+            sum_jobs_and_min_index(machine)
+            # print(machine)
+
+        print("----")
         print(full_sequence)
+
+    end = time.time()
+    print("\nTiempo de ejecucion del programa: %d ms " % ((end - start) * 1000))
 
     # sequences_list = []
     # sequence_count = 1
