@@ -105,7 +105,7 @@ def main():
     start = time.time()
     print("Job Shop Scheduling con Fuerza Bruta")
 
-    input_matrix = i2
+    input_matrix = i3
     machines_number = len(input_matrix)
     jobs_number = len(input_matrix[0])
 
@@ -248,6 +248,10 @@ def main():
     print("99999999999999")
     print(sequences_list)
 
+    # Calcular makespan
+    for seq in sequences_list:
+        print(seq)
+
         # for machine in temp_machines_list:
         #     print("machine tu: ", machine)
         #     for job in machine.jobs:
@@ -255,14 +259,15 @@ def main():
         #         for jjj in job:
         #             print("hhhh: ", jjj)
 
-    c_range = [i for i in range(0, machines_number) if i != min_machine_index]
-    print("c_range: ", c_range)
+    # c_range = [i for i in range(0, machines_number) if i != min_machine_index]
+    # print("c_range: ", c_range)
 
 
 
 
     end = time.time()
     print("\nTiempo de ejecucion del programa: %d ms " % ((end - start) * 1000))
+    print("\nTiempo de ejecucion del programa: %d s " % ((end - start)))
 
     # sequences_list = []
     # sequence_count = 1
