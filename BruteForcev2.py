@@ -201,21 +201,6 @@ def main():
         min_machine, min_machine_index = get_min_duration_machine(full_sequence.machines)
         print("which min machine: ", min_machine)
 
-
-    print("qpd: ", min_machine)
-
-    for full_sequence in sequences_list:
-        for job_sequence in full_sequence.machines[min_machine_index].jobs:
-            for job in job_sequence:
-                print("job: ", job)
-
-                # machines_matrix = list()
-                # remove_in_matrix = [x for x in lst if x != 'A']
-                #
-                # for compare_job in
-
-
-    for full_sequence in sequences_list:
         print("qqqq: ", full_sequence)
         temp_machines_list = list(full_sequence.machines)
         del temp_machines_list[min_machine_index]
@@ -223,20 +208,38 @@ def main():
         print(".........")
         print("min machine: ", min_machine)
         for x in min_machine.jobs:
-            for y in x:
+            for ymin in x:
                 for machine in temp_machines_list:
                     for x in machine.jobs:
-                        for j in x:
-                            if y.id != j.id:
-                                if (y.start_time - j.end_time) >= 0 or (y.end_time - j.start_time) >= 0:
-                                    print("iguales")
-                                    print("y start: %s - end %s" % (y.start_time, y.end_time))
-                                    print("j start: %s - end %s" % (j.start_time, j.end_time))
-                                    y.start_time = j.end_time + (j.end_time - y.start_time)
-                                    y.end_time = y.start_time + y.duration
+                        for celem in x:
+                            if ymin.id == celem.id:
+                                print("job id iguales")
+                                print("y start: %s - end %s" % (ymin.start_time, ymin.end_time))
+                                print("j start: %s - end %s" % (celem.start_time, celem.end_time))
+                                ymin.start_time = celem.end_time
+                                ymin.end_time = ymin.start_time + ymin.duration
+                                print("y iguales new start: %s, new end: %s" % (ymin.start_time, ymin.end_time))
+                            # else:
+                            #     print("job id diferentes")
+                            #     if (ymin.start_time - celem.end_time) >= 0 or (ymin.end_time - celem.start_time) >= 0:
+                            #         print("y start: %s - end %s" % (ymin.start_time, ymin.end_time))
+                            #         print("j start: %s - end %s" % (celem.start_time, celem.end_time))
+                            #         ymin.start_time = celem.end_time + (celem.end_time - ymin.start_time)
+                            #         ymin.end_time = ymin.start_time + ymin.duration
+                            #     print("y diferentes new start: %s, new end: %s" % (ymin.start_time, ymin.end_time))
 
-                                    print("y new start: %s, new end: %s" % (y.start_time, y.end_time))
 
+    print("qpd: ", min_machine)
+
+    # for full_sequence in sequences_list:
+    #     for job_sequence in full_sequence.machines[min_machine_index].jobs:
+    #         for job in job_sequence:
+    #             print("job: ", job)
+
+                # machines_matrix = list()
+                # remove_in_matrix = [x for x in lst if x != 'A']
+                #
+                # for compare_job in
 
 
 
