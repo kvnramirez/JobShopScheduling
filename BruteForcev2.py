@@ -101,21 +101,21 @@ def get_min_duration_machine(machines_list):
         min(machines_list, key=attrgetter('total_duration')))
 
 
-def get_min_sequences(sequences_list):
+def get_max_sequences(sequences_list):
     """
     Obtener la maquina con secuencia de ejecucion minima y su indice
     :param machines_list:
     :return: Machine, machine index in list
     """
-    min_indexes = []
-    min_value = min(x.makespan for x in sequences_list)
+    max_indexes = []
+    max_value = max(x.makespan for x in sequences_list)
 
     for index, element in enumerate(sequences_list):
 
-        if min_value == element.makespan:  # check if this element is the minimum_value
-            min_indexes.append(index)  # add the index to the list if it is
+        if max_value == element.makespan:  # check if this element is the minimum_value
+            max_indexes.append(index)  # add the index to the list if it is
 
-    return min_indexes
+    return max_indexes
 
 
 def main():
@@ -238,39 +238,71 @@ def main():
                                 print("y id: %s, start: %s - end %s" % (ymin.id, ymin.start_time, ymin.end_time))
                                 print("j id %s, start: %s - end %s" % (celem.id, celem.start_time, celem.end_time))
 
-        # Procesar demas casos
-        print("holi")
-        new_min_machine, new_min_machine_index = get_min_duration_machine(temp_machines_list)
-        print("which min machine: ", new_min_machine)
-        temp_machines_list_2 = list(temp_machines_list)
-        del temp_machines_list_2[new_min_machine_index]
-        print("temp_machines_list_2: ", temp_machines_list_2)
+        if machines_number == 3:
+            # Para 3
+            new_min_machine, new_min_machine_index = get_min_duration_machine(temp_machines_list)
+            print("which min machine_2: ", new_min_machine)
 
-        for x in new_min_machine.jobs:
-            for ymin in x:
-                for machine in temp_machines_list_2:
-                    for x in machine.jobs:
-                        for celem in x:
-                            if ymin.id == celem.id:
-                                print("job id iguales")
-                                print("y start: %s - end %s" % (ymin.start_time, ymin.end_time))
-                                print("j start: %s - end %s" % (celem.start_time, celem.end_time))
-                                ymin.start_time = celem.end_time
-                                ymin.end_time = ymin.start_time + ymin.duration
-                                print("y iguales new start: %s, new end: %s" % (ymin.start_time, ymin.end_time))
-                            # else:
-                            #     print("job id diferentes")
-                            #     if (ymin.start_time - celem.end_time) >= 0 or (ymin.end_time - celem.start_time) >= 0:
-                            #         print("y start: %s - end %s" % (ymin.start_time, ymin.end_time))
-                            #         print("j start: %s - end %s" % (celem.start_time, celem.end_time))
-                            #         ymin.start_time = celem.end_time + (celem.end_time - ymin.start_time)
-                            #         ymin.end_time = ymin.start_time + ymin.duration
-                            #     print("y diferentes new start: %s, new end: %s" % (ymin.start_time, ymin.end_time))
-                            else:
-                                print("P: no")
+            last_min_machine = list(temp_machines_list)
+            del last_min_machine[new_min_machine_index]
+            last_temp_machines_list = [new_min_machine, min_machine]
+            print("last min machine: ", last_min_machine)
 
-                                print("y id: %s, start: %s - end %s" % (ymin.id, ymin.start_time, ymin.end_time))
-                                print("j id %s, start: %s - end %s" % (celem.id, celem.start_time, celem.end_time))
+            temp_machines_list_2 = list(full_sequence.machines)
+            del temp_machines_list_2[new_min_machine_index]
+            print("temp_machines_list_2: ", temp_machines_list_2)
+
+            for x in new_min_machine.jobs:
+                for ymin in x:
+                    for machine in temp_machines_list_2:
+                        for x in machine.jobs:
+                            for celem in x:
+                                if ymin.id == celem.id:
+                                    print("job id iguales")
+                                    print("y start: %s - end %s" % (ymin.start_time, ymin.end_time))
+                                    print("j start: %s - end %s" % (celem.start_time, celem.end_time))
+                                    ymin.start_time = celem.end_time
+                                    ymin.end_time = ymin.start_time + ymin.duration
+                                    print("y iguales new start: %s, new end: %s" % (ymin.start_time, ymin.end_time))
+                                # else:
+                                #     print("job id diferentes")
+                                #     if (ymin.start_time - celem.end_time) >= 0 or (ymin.end_time - celem.start_time) >= 0:
+                                #         print("y start: %s - end %s" % (ymin.start_time, ymin.end_time))
+                                #         print("j start: %s - end %s" % (celem.start_time, celem.end_time))
+                                #         ymin.start_time = celem.end_time + (celem.end_time - ymin.start_time)
+                                #         ymin.end_time = ymin.start_time + ymin.duration
+                                #     print("y diferentes new start: %s, new end: %s" % (ymin.start_time, ymin.end_time))
+                                else:
+                                    print("P: no")
+
+                                    print("y id: %s, start: %s - end %s" % (ymin.id, ymin.start_time, ymin.end_time))
+                                    print("j id %s, start: %s - end %s" % (celem.id, celem.start_time, celem.end_time))
+
+            for x in last_min_machine[0].jobs:
+                for ymin in x:
+                    for machine in last_temp_machines_list:
+                        for x in machine.jobs:
+                            for celem in x:
+                                if ymin.id == celem.id:
+                                    print("job id iguales")
+                                    print("y start: %s - end %s" % (ymin.start_time, ymin.end_time))
+                                    print("j start: %s - end %s" % (celem.start_time, celem.end_time))
+                                    ymin.start_time = celem.end_time
+                                    ymin.end_time = ymin.start_time + ymin.duration
+                                    print("y iguales new start: %s, new end: %s" % (ymin.start_time, ymin.end_time))
+                                # else:
+                                #     print("job id diferentes")
+                                #     if (ymin.start_time - celem.end_time) >= 0 or (ymin.end_time - celem.start_time) >= 0:
+                                #         print("y start: %s - end %s" % (ymin.start_time, ymin.end_time))
+                                #         print("j start: %s - end %s" % (celem.start_time, celem.end_time))
+                                #         ymin.start_time = celem.end_time + (celem.end_time - ymin.start_time)
+                                #         ymin.end_time = ymin.start_time + ymin.duration
+                                #     print("y diferentes new start: %s, new end: %s" % (ymin.start_time, ymin.end_time))
+                                else:
+                                    print("P: no")
+
+                                    print("y id: %s, start: %s - end %s" % (ymin.id, ymin.start_time, ymin.end_time))
+                                    print("j id %s, start: %s - end %s" % (celem.id, celem.start_time, celem.end_time))
 
     print("qpd: ", min_machine)
 
@@ -312,8 +344,8 @@ def main():
 
     print("~~~~~~~~~~~~~~~~~~~~~~~~")
     print("Displaying better sequences...")
-    print("Total sequences: ", len(get_min_sequences(sequences_list)))
-    for y in get_min_sequences(sequences_list):
+    print("Total sequences: ", len(get_max_sequences(sequences_list)))
+    for y in get_max_sequences(sequences_list):
         print(sequences_list[y])
 
     # for machine in temp_machines_list:
@@ -328,7 +360,7 @@ def main():
 
     end = time.time()
     print("\nTiempo de ejecucion del programa: %d ms " % ((end - start) * 1000))
-    print("\nTiempo de ejecucion del programa: %d s " % ((end - start)))
+    # print("\nTiempo de ejecucion del programa: %d s " % ((end - start)))
 
     # sequences_list = []
     # sequence_count = 1
