@@ -2,6 +2,7 @@
 import copy
 import itertools
 import time
+from operator import attrgetter
 
 from instances import i1, i2, i3
 
@@ -14,7 +15,7 @@ class Sequence:
         self.makespan = makespan
 
     def __repr__(self):
-        return '\n->Sequence %s , makespan: %s,\n-->machines: %s>' % (self.id, self.makespan, self.machines)
+        return '\n->Sequence %s , makespan: %s,\n-->machines: %s' % (self.id, self.makespan, self.machines)
 
 
 class Machine:
@@ -24,7 +25,7 @@ class Machine:
         self.total_duration = total_duration
 
     def __repr__(self):
-        return '\n-Machine %s, duration: %s, jobs: %s>' % (self.id, self.total_duration, self.jobs)
+        return '\n-Machine %s, duration: %s, jobs: %s' % (self.id, self.total_duration, self.jobs)
 
 
 class Job:
@@ -73,10 +74,6 @@ def get_base_solution(jobs_list, machines_number):
     return get_jobs_by_machine(sum_each.index(min(sum_each)), jobs_list), sum_each.index(min(sum_each))
 
 
-def get_min_next_machine():
-    pass
-
-
 def sum_jobs_and_min_index(machine):
     """
     Actualizar duracion de cada machine para su secuencia de jobs
@@ -91,6 +88,16 @@ def sum_jobs_and_min_index(machine):
         sum_each.append(sum)
         machine.total_duration = sum
     # print("aqui", sum_each)
+
+
+def get_min_duration_machine(machines_list):
+    """
+    Obtener la maquina con secuencia de ejecucion minima y su indice
+    :param machines_list:
+    :return: Machine, machine index in list
+    """
+    return min(machines_list, key=attrgetter('total_duration')), machines_list.index(
+        min(machines_list, key=attrgetter('total_duration')))
 
 
 def main():
@@ -163,13 +170,34 @@ def main():
     # -Machine 1, duration: 5, jobs: [(<Job 1, machine_id: 1, start_time: 0, end_time: 0, duration: 3>, <Job 2, machine_id: 1, start_time: 0, end_time: 0, duration: 2>)]>]>
     for full_sequence in sequences_list:
         for machine in full_sequence.machines:
+            print("sum jobs")
             sum_jobs_and_min_index(machine)
+
+            print("setting times...")
+            for jobs_sequence in machine.jobs:
+                start = 0
+                for job in jobs_sequence:
+                    job.start_time = start
+                    job.end_time = job.duration + start
+                    start = start + job.duration
+
         print(full_sequence)
 
+    # print("setting times...")
+    # for full_sequence in sequences_list:
+    #     for machine in full_sequence.machines:
+    #         for jobs_sequence in machine.jobs:
+    #             start = 0
+    #             for job in jobs_sequence:
+    #                 job.start_time = start
+    #                 job.end_time = job.duration + start
+    #                 start = start + job.duration
+
+    print(sequences_list)
+
+
     for full_sequence in sequences_list:
-        print("fs: ", full_sequence)
-        for machine in full_sequence.machines:
-            print("X: ", machine)
+        min_machine, min_machine_index = get_min_duration_machine(full_sequence.machines)
 
     end = time.time()
     print("\nTiempo de ejecucion del programa: %d ms " % ((end - start) * 1000))
