@@ -188,40 +188,28 @@ def main():
     # -Machine 1, duration: 5, jobs: [(<Job 1, machine_id: 1, start_time: 0, end_time: 0, duration: 3>, <Job 2, machine_id: 1, start_time: 0, end_time: 0, duration: 2>)]>]>
     for full_sequence in sequences_list:
         for machine in full_sequence.machines:
-            print("sum jobs")
             sum_jobs_and_min_index(machine)
-
-            print("setting times...")
             for jobs_sequence in machine.jobs:
                 start = 0
                 for job in jobs_sequence:
                     job.start_time = start
                     job.end_time = job.duration + start
                     start = start + job.duration
+        # print(full_sequence)
 
-        print(full_sequence)
+    # print(sequences_list)
 
-    # print("setting times...")
-    # for full_sequence in sequences_list:
-    #     for machine in full_sequence.machines:
-    #         for jobs_sequence in machine.jobs:
-    #             start = 0
-    #             for job in jobs_sequence:
-    #                 job.start_time = start
-    #                 job.end_time = job.duration + start
-    #                 start = start + job.duration
-
-    print(sequences_list)
-
+    # Ajustar tiempos de jobs para cada maquina
     min_machine_index = 0
     for full_sequence in sequences_list:
         min_machine, min_machine_index = get_min_duration_machine(full_sequence.machines)
         print("which min machine: ", min_machine)
 
-        print("qqqq: ", full_sequence)
         temp_machines_list = list(full_sequence.machines)
         del temp_machines_list[min_machine_index]
+        print("temp_machines_list: ", temp_machines_list)
 
+        # Procesar caso base
         print(".........")
         print("min machine: ", min_machine)
         for x in min_machine.jobs:
@@ -244,6 +232,45 @@ def main():
                             #         ymin.start_time = celem.end_time + (celem.end_time - ymin.start_time)
                             #         ymin.end_time = ymin.start_time + ymin.duration
                             #     print("y diferentes new start: %s, new end: %s" % (ymin.start_time, ymin.end_time))
+                            else:
+                                print("P: no")
+
+                                print("y id: %s, start: %s - end %s" % (ymin.id, ymin.start_time, ymin.end_time))
+                                print("j id %s, start: %s - end %s" % (celem.id, celem.start_time, celem.end_time))
+
+        # Procesar demas casos
+        print("holi")
+        new_min_machine, new_min_machine_index = get_min_duration_machine(temp_machines_list)
+        print("which min machine: ", new_min_machine)
+        temp_machines_list_2 = list(temp_machines_list)
+        del temp_machines_list_2[new_min_machine_index]
+        print("temp_machines_list_2: ", temp_machines_list_2)
+
+        for x in new_min_machine.jobs:
+            for ymin in x:
+                for machine in temp_machines_list_2:
+                    for x in machine.jobs:
+                        for celem in x:
+                            if ymin.id == celem.id:
+                                print("job id iguales")
+                                print("y start: %s - end %s" % (ymin.start_time, ymin.end_time))
+                                print("j start: %s - end %s" % (celem.start_time, celem.end_time))
+                                ymin.start_time = celem.end_time
+                                ymin.end_time = ymin.start_time + ymin.duration
+                                print("y iguales new start: %s, new end: %s" % (ymin.start_time, ymin.end_time))
+                            # else:
+                            #     print("job id diferentes")
+                            #     if (ymin.start_time - celem.end_time) >= 0 or (ymin.end_time - celem.start_time) >= 0:
+                            #         print("y start: %s - end %s" % (ymin.start_time, ymin.end_time))
+                            #         print("j start: %s - end %s" % (celem.start_time, celem.end_time))
+                            #         ymin.start_time = celem.end_time + (celem.end_time - ymin.start_time)
+                            #         ymin.end_time = ymin.start_time + ymin.duration
+                            #     print("y diferentes new start: %s, new end: %s" % (ymin.start_time, ymin.end_time))
+                            else:
+                                print("P: no")
+
+                                print("y id: %s, start: %s - end %s" % (ymin.id, ymin.start_time, ymin.end_time))
+                                print("j id %s, start: %s - end %s" % (celem.id, celem.start_time, celem.end_time))
 
     print("qpd: ", min_machine)
 
