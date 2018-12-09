@@ -105,7 +105,7 @@ def main():
     start = time.time()
     print("Job Shop Scheduling con Fuerza Bruta")
 
-    input_matrix = i3
+    input_matrix = i2
     machines_number = len(input_matrix)
     jobs_number = len(input_matrix[0])
 
@@ -228,7 +228,6 @@ def main():
                             #         ymin.end_time = ymin.start_time + ymin.duration
                             #     print("y diferentes new start: %s, new end: %s" % (ymin.start_time, ymin.end_time))
 
-
     print("qpd: ", min_machine)
 
     # for full_sequence in sequences_list:
@@ -236,34 +235,46 @@ def main():
     #         for job in job_sequence:
     #             print("job: ", job)
 
-                # machines_matrix = list()
-                # remove_in_matrix = [x for x in lst if x != 'A']
-                #
-                # for compare_job in
-
-
-
-
+    # machines_matrix = list()
+    # remove_in_matrix = [x for x in lst if x != 'A']
+    #
+    # for compare_job in
 
     print("99999999999999")
     print(sequences_list)
 
     # Calcular makespan
-    for seq in sequences_list:
-        print(seq)
 
-        # for machine in temp_machines_list:
-        #     print("machine tu: ", machine)
-        #     for job in machine.jobs:
-        #         print("job: ", job)
-        #         for jjj in job:
-        #             print("hhhh: ", jjj)
+    print("~~~~~~~~~~~~~~~~~~~~~~~~")
+    print("Calculating spans each machine...")
+    for sequence in sequences_list:
+        for machine in sequence.machines:
+            for jobs_sequence in machine.jobs:
+                end_times = []
+                for job in jobs_sequence:
+                    end_times.append(job.end_time)
+                print("machine %s, %s" % (machine.id, end_times))
+                machine.total_duration = max(end_times)
+
+    print("~~~~~~~~~~~~~~~~~~~~~~~~")
+    print("Setting makespan each sequence...")
+    for sequence in sequences_list:
+        durations = []
+        for machine in sequence.machines:
+            durations.append(machine.total_duration)
+        sequence.makespan = max(durations)
+
+    print(sequences_list)
+
+    # for machine in temp_machines_list:
+    #     print("machine tu: ", machine)
+    #     for job in machine.jobs:
+    #         print("job: ", job)
+    #         for jjj in job:
+    #             print("hhhh: ", jjj)
 
     # c_range = [i for i in range(0, machines_number) if i != min_machine_index]
     # print("c_range: ", c_range)
-
-
-
 
     end = time.time()
     print("\nTiempo de ejecucion del programa: %d ms " % ((end - start) * 1000))
