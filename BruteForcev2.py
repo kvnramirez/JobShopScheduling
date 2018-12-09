@@ -285,7 +285,7 @@ def main():
 
     print("~~~~~~~~~~~~~~~~~~~~~~~~")
     print("Displaying better sequences...")
-    print(get_min_sequences(sequences_list))
+    print("Total sequences: ", len(get_min_sequences(sequences_list)))
     for y in get_min_sequences(sequences_list):
         print(sequences_list[y])
 
