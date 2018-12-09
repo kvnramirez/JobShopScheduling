@@ -96,6 +96,7 @@ def get_min_duration_machine(machines_list):
     :param machines_list:
     :return: Machine, machine index in list
     """
+    print("spm: ", min(machines_list, key=attrgetter('total_duration')))
     return min(machines_list, key=attrgetter('total_duration')), machines_list.index(
         min(machines_list, key=attrgetter('total_duration')))
 
@@ -195,9 +196,67 @@ def main():
 
     print(sequences_list)
 
-
+    min_machine_index = 0
     for full_sequence in sequences_list:
         min_machine, min_machine_index = get_min_duration_machine(full_sequence.machines)
+        print("which min machine: ", min_machine)
+
+
+    print("qpd: ", min_machine)
+
+    for full_sequence in sequences_list:
+        for job_sequence in full_sequence.machines[min_machine_index].jobs:
+            for job in job_sequence:
+                print("job: ", job)
+
+                # machines_matrix = list()
+                # remove_in_matrix = [x for x in lst if x != 'A']
+                #
+                # for compare_job in
+
+
+    for full_sequence in sequences_list:
+        print("qqqq: ", full_sequence)
+        temp_machines_list = list(full_sequence.machines)
+        del temp_machines_list[min_machine_index]
+
+        print(".........")
+        print("min machine: ", min_machine)
+        for x in min_machine.jobs:
+            for y in x:
+                for machine in temp_machines_list:
+                    for x in machine.jobs:
+                        for j in x:
+                            if y.id != j.id:
+                                if (y.start_time - j.end_time) >= 0 or (y.end_time - j.start_time) >= 0:
+                                    print("iguales")
+                                    print("y start: %s - end %s" % (y.start_time, y.end_time))
+                                    print("j start: %s - end %s" % (j.start_time, j.end_time))
+                                    y.start_time = j.end_time + (j.end_time - y.start_time)
+                                    y.end_time = y.start_time + y.duration
+
+                                    print("y new start: %s, new end: %s" % (y.start_time, y.end_time))
+
+
+
+
+
+
+    print("99999999999999")
+    print(sequences_list)
+
+        # for machine in temp_machines_list:
+        #     print("machine tu: ", machine)
+        #     for job in machine.jobs:
+        #         print("job: ", job)
+        #         for jjj in job:
+        #             print("hhhh: ", jjj)
+
+    c_range = [i for i in range(0, machines_number) if i != min_machine_index]
+    print("c_range: ", c_range)
+
+
+
 
     end = time.time()
     print("\nTiempo de ejecucion del programa: %d ms " % ((end - start) * 1000))
