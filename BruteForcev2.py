@@ -78,6 +78,10 @@ def get_min_next_machine():
 
 
 def sum_jobs_and_min_index(machine):
+    """
+    Actualizar duracion de cada machine para su secuencia de jobs
+    :param machine: Machine object
+    """
     sum_each = []
     sum = 0
     for x in machine.jobs:
@@ -152,13 +156,20 @@ def main():
     print(sequences_list)
 
     print("\nScheduling each sequence... ")
+    # Almacenar suma de jobs de cada secuencia de cada maquina
+    # ->Sequence 1 , makespan: 0,
+    # -->machines: [
+    # -Machine 0, duration: 7, jobs: [(<Job 1, machine_id: 0, start_time: 0, end_time: 0, duration: 3>, <Job 2, machine_id: 0, start_time: 0, end_time: 0, duration: 4>)]>,
+    # -Machine 1, duration: 5, jobs: [(<Job 1, machine_id: 1, start_time: 0, end_time: 0, duration: 3>, <Job 2, machine_id: 1, start_time: 0, end_time: 0, duration: 2>)]>]>
     for full_sequence in sequences_list:
         for machine in full_sequence.machines:
             sum_jobs_and_min_index(machine)
-            # print(machine)
-
-        print("----")
         print(full_sequence)
+
+    for full_sequence in sequences_list:
+        print("fs: ", full_sequence)
+        for machine in full_sequence.machines:
+            print("X: ", machine)
 
     end = time.time()
     print("\nTiempo de ejecucion del programa: %d ms " % ((end - start) * 1000))
