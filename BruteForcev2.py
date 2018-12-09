@@ -101,6 +101,23 @@ def get_min_duration_machine(machines_list):
         min(machines_list, key=attrgetter('total_duration')))
 
 
+def get_min_sequences(sequences_list):
+    """
+    Obtener la maquina con secuencia de ejecucion minima y su indice
+    :param machines_list:
+    :return: Machine, machine index in list
+    """
+    min_indexes = []
+    min_value = min(x.makespan for x in sequences_list)
+
+    for index, element in enumerate(sequences_list):
+
+        if min_value == element.makespan:  # check if this element is the minimum_value
+            min_indexes.append(index)  # add the index to the list if it is
+
+    return min_indexes
+
+
 def main():
     start = time.time()
     print("Job Shop Scheduling con Fuerza Bruta")
@@ -265,6 +282,12 @@ def main():
         sequence.makespan = max(durations)
 
     print(sequences_list)
+
+    print("~~~~~~~~~~~~~~~~~~~~~~~~")
+    print("Displaying better sequences...")
+    print(get_min_sequences(sequences_list))
+    for y in get_min_sequences(sequences_list):
+        print(sequences_list[y])
 
     # for machine in temp_machines_list:
     #     print("machine tu: ", machine)
