@@ -3,7 +3,7 @@
 
 # User-specific stuff
 .idea
-vend
+venv
 
 # IntelliJ
 out/
