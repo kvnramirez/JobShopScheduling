@@ -123,19 +123,44 @@ def main():
         c_counter = 1
         d_counter = 1
 
-
-        for i in range(len(new_solution.machines)-1):
+        for i in range(len(new_solution.machines) - 1):
             j_counter = 0
             c1 = new_solution.machines[d_counter - 1].jobs
             c2 = new_solution.machines[d_counter].jobs
 
             d_counter = d_counter + 1
-
-            for i in range(len(new_solution.machines[d_counter - 1].jobs)):
+            s = 0
+            p_end = 0
+            for i in range(len(c1)):
                 if j_counter == 0:
                     # primer trabajo de cada maquina
                     c2[i][0].start_time = c1[i][0].end_time
                     c2[i][0].end_time = c2[i][0].start_time + c2[i][0].duration
+                    j_counter = j_counter + 1
+                    s = c2[i][0].end_time
+                else:
+                    print("-------------")
+                    print("empezar job que no es el primero en : ", s)
+                    print("c1[i][0].id : ", c1[i][0].id)
+                    print("c1[i][0].start_time : ", c1[i][0].start_time)
+                    print("c1[i][0].end_time : ", c1[i][0].end_time)
+                    print("c2[i][0].id : ", c2[i][0].id)
+                    print("c2[i][0].start_time : ", c2[i][0].start_time)
+                    print("c2[i][0].end_time : ", c2[i][0].end_time)
+                    print("c1[i][0].end_time - s: ",c1[i][0].end_time - s)
+                    if c1[i][0].end_time - s > 0:
+                        c2[i][0].start_time = c1[i][0].end_time
+                        c2[i][0].end_time = c2[i][0].start_time + c2[i][0].duration
+                        j_counter = j_counter + 1
+                        s = c2[i][0].end_time
+                        pass
+                    else:
+                        c2[i][0].start_time = s
+                        c2[i][0].end_time = c2[i][0].start_time + c2[i][0].duration
+                        j_counter = j_counter + 1
+                        s = c2[i][0].end_time
+                        pass
+                    print("-----------------")
                 print("c1: ", c1[i][0])
                 print("c2: ", c2[i][0])
 
