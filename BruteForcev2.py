@@ -5,7 +5,7 @@ import time
 from operator import attrgetter
 
 from Classes import Job, Solution, Machine
-from instances import i1, i2, i3
+from instances import i1, i2, i3, i5
 from utils import get_max_sequences, get_min_sequences
 
 
