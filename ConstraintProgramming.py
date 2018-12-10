@@ -2,11 +2,13 @@
 from __future__ import print_function
 import collections
 # Import Python wrapper for or-tools CP-SAT solver.
-from ortools.sat.python import cp_model
+import time
 
+from ortools.sat.python import cp_model
 
 # https://developers.google.com/optimization/
 # https://developers.google.com/optimization/scheduling/job_shop
+from instances import i3
 
 
 def minimalJobshopSat(jobs_data):
@@ -113,12 +115,13 @@ def minimalJobshopSat(jobs_data):
 
 
 def main():
-    jobs_data = [  # task = (machine_id, processing_time).
-        [(0, 3), (1, 2), (2, 2)],  # Job0
-        [(0, 2), (2, 1), (1, 4)],  # Job1
-        [(1, 4), (2, 3)]  # Job2
-    ]
+    print("Job Shop Scheduling con Constraint Programming")
+    t0 = time.clock()
+    jobs_data = i3
     minimalJobshopSat(jobs_data)
+
+    t1 = time.clock() - t0
+    print("\nTiempo de ejecucion del programa: %s ms " % (t1 - t0))  # CPU seconds elapsed (floating point)
 
 
 if __name__ == "__main__":

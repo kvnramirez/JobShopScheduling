@@ -25,11 +25,11 @@ def get_job_by_machine_and_job_id(jobs_list, job_id, machine_id):
 
 
 def main():
-    start = time.time()
+    t0 = time.clock()
     print("Job Shop Scheduling con Algoritmo de Johnson")
 
     # i2, i3, i1
-    input_matrix = i10
+    input_matrix = i3
     machines_number = len(input_matrix)
     jobs_number = len(input_matrix[0])
 
@@ -234,8 +234,8 @@ def main():
     for y in get_min_sequences(solutions):
         print(solutions[y])
 
-    end = time.time()
-    print("\nTiempo de ejecucion del programa: %d ms " % ((end - start) * 1000))
+    t1 = time.clock() - t0
+    print("\nTiempo de ejecucion del programa: %s ms " % (t1 - t0))  # CPU seconds elapsed (floating point)
     # print("\nTiempo de ejecucion del programa: %d s " % ((end - start)))
 
 

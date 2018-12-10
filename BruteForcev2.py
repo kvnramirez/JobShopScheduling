@@ -6,7 +6,7 @@ from operator import attrgetter
 
 from Classes import Job, Solution, Machine
 from instances import i1, i2, i3
-from utils import get_max_sequences
+from utils import get_max_sequences, get_min_sequences
 
 
 def create_jobs(input):
@@ -67,7 +67,7 @@ def get_min_duration_machine(machines_list):
 
 
 def main():
-    start = time.time()
+    t0 = time.clock()
     print("Job Shop Scheduling con Fuerza Bruta")
 
     # i2, i3, i1
@@ -214,7 +214,7 @@ def main():
     for sequence in sequences_list:
         durations = []
         for machine in sequence.machines:
-            durations.append(machine.total_duration)
+
 
             for jobs_sequence in machine.jobs:
                 end_times = []
@@ -222,16 +222,17 @@ def main():
                     end_times.append(job.end_time)
                 print("Maquina %s, %s" % (machine.id, end_times))
                 machine.total_duration = max(end_times)
+            durations.append(machine.total_duration)
         sequence.makespan = max(durations)
 
     print("~~~~~~~~~~~~~~~~~~~~~~~~")
     print("Mostrando mejores calendarizaciones...")
-    print("Total mejores calendarizaciones: ", len(get_max_sequences(sequences_list)))
-    for y in get_max_sequences(sequences_list):
+    print("Total mejores calendarizaciones: ", len(get_min_sequences(sequences_list)))
+    for y in get_min_sequences(sequences_list):
         print(sequences_list[y])
 
-    end = time.time()
-    print("\nTiempo de ejecucion del programa: %d ms " % ((end - start) * 1000))
+    t1 = time.clock() - t0
+    print("\nTiempo de ejecucion del programa: %s ms " % (t1 - t0))  # CPU seconds elapsed (floating point)
     # print("\nTiempo de ejecucion del programa: %d s " % ((end - start)))
 
 
