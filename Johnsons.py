@@ -104,10 +104,12 @@ def main():
             print("new_machine: ", new_machine)
             new_solution.machines.append(new_machine)
 
-        # Calcular solucion
+        # Establecer tiempos de cada trabajo de primer maquina
         x_counter = 0
         for machine in new_solution.machines:
+
             if x_counter == 0:
+                # El primer trabajo siempre se ejecuta en secuencia definida, se establecen tiempos de inicio y fin de cada trabajo
                 start = 0
                 for job in machine.jobs:
                     job[0].start_time = start
@@ -116,6 +118,43 @@ def main():
                     start = job[0].end_time
             x_counter = x_counter + 1
             print("mx: ", machine)
+
+        # Establecer tiempos de cada trabajo para las demas maquinas
+        c_counter = 1
+        d_counter = 1
+
+
+        for i in range(len(new_solution.machines)-1):
+            j_counter = 0
+            c1 = new_solution.machines[d_counter - 1].jobs
+            c2 = new_solution.machines[d_counter].jobs
+
+            d_counter = d_counter + 1
+
+            for i in range(len(new_solution.machines[d_counter - 1].jobs)):
+                if j_counter == 0:
+                    # primer trabajo de cada maquina
+                    c2[i][0].start_time = c1[i][0].end_time
+                    c2[i][0].end_time = c2[i][0].start_time + c2[i][0].duration
+                print("c1: ", c1[i][0])
+                print("c2: ", c2[i][0])
+
+        # for i in range(len(new_solution.machines)):
+        #     print("www: ", new_solution.machines[c_counter - 1])
+        #     for x_job in new_solution.machines[c_counter - 1].jobs:
+        #         start = 0
+        #         elem_count = 0
+        #         for y_job in new_solution.machines[c_counter].jobs:
+        #             if x_job[0].id == y_job[0].id:
+        #                 if elem_count == 0:
+        #                     y_job[0].start_time = x_job[0].end_time
+        #                     y_job[0].end_time = y_job[0].start_time + y_job[0].duration
+        #                     start = y_job[0].end_time
+        #                     print("start: ", start)
+        #                 else:
+        #                     print("elem_count: ", elem_count)
+        #                     print("x start: ", start)
+        #             elem_count = elem_count + 1
 
         # for job in job_sequence:
         #     end = 0
