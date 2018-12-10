@@ -30,33 +30,41 @@ def main():
     # Crear list de jobs
     list_jobs = create_jobs(input_matrix)
 
-    print(list_jobs)
+    # print(list_jobs)
 
     m_range = [i for i in range(machines_number)]
-    print("m range: ", m_range)
+    # print("m range: ", m_range)
     range_permutations = list(itertools.permutations(m_range))
-    print("rp: ", range_permutations)
+    print("range permutations: ", range_permutations)
 
-    for p_range in range_permutations:
+    for range_permutation in range_permutations:
         temp_matrix = []
-        for i in p_range:
+        for i in m_range:
             temp_matrix.append(copy.deepcopy(get_jobs_by_machine(i, list_jobs)))
 
-        print(temp_matrix)
+        print("temp matrix: ", temp_matrix)
 
         left = []
         right = []
-        for i in p_range:
+        print("range permutation: ", range_permutation)
+        counter = 0
+        for i in range_permutation:
+            print("machine for min job: ", i)
+            print("new temp matrix: ", temp_matrix)
             min_job, min_job_index = get_min_job(temp_matrix[i])
-            if (i % 2) == 0:
+            if (counter % 2) == 0:
                 print("{0} is Even, right set".format(i))
                 print(temp_matrix[i])
                 left.append(min_job.id)
+                print("updated left: ", left)
             else:
                 print("{0} is Odd, left set".format(i))
                 print(temp_matrix[i])
                 right.append(min_job.id)
+                print("updated right: ", right)
+            counter = counter + 1
             del temp_matrix[i][min_job_index]
+            print("-------------")
 
         # Ordenar de manera descendente
         # left.sort(reverse=True)
@@ -65,7 +73,7 @@ def main():
         print("left: ", left)
         print("right: ", right)
 
-        print("secuencia: ", left+right)
+        print("secuencia: ", left + right)
 
         # Calcular solucion
 
