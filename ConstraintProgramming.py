@@ -8,7 +8,7 @@ from ortools.sat.python import cp_model
 
 # https://developers.google.com/optimization/
 # https://developers.google.com/optimization/scheduling/job_shop
-from instances import i3, i1, i2
+from instances import i3, i1, i2, i5
 
 
 def minimalJobshopSat(jobs_data):
@@ -117,7 +117,7 @@ def minimalJobshopSat(jobs_data):
 def main():
     print("Job Shop Scheduling con Constraint Programming")
     t0 = time.clock()
-    jobs_data = i3
+    jobs_data = i5
     minimalJobshopSat(jobs_data)
 
     t1 = time.clock() - t0

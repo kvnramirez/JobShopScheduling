@@ -5,7 +5,7 @@ import time
 from operator import attrgetter
 
 from Classes import Machine, Solution
-from instances import i3, i2, i1, i4, i10
+from instances import i3, i2, i1, i4, i10, i5
 from utils import create_jobs, get_jobs_by_machine, get_min_sequences
 
 
@@ -29,7 +29,7 @@ def main():
     print("Job Shop Scheduling con Algoritmo de Johnson")
 
     # i2, i3, i1
-    input_matrix = i3
+    input_matrix = i5
     machines_number = len(input_matrix)
     jobs_number = len(input_matrix[0])
 
