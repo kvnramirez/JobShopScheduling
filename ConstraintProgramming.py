@@ -8,7 +8,7 @@ from ortools.sat.python import cp_model
 
 # https://developers.google.com/optimization/
 # https://developers.google.com/optimization/scheduling/job_shop
-from instances import i3
+from instances import i3, i1, i2
 
 
 def minimalJobshopSat(jobs_data):
