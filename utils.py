@@ -43,3 +43,33 @@ def get_jobs_by_machine(machine_id, jobs_list):
             results.append(job)
 
     return results
+
+
+def get_max_sequences(sequences_list):
+    """
+    Obtener la maquina con secuencia de ejecucion maxima y su indice
+    :param machines_list: lista de Maquinas
+    :return: Maquina, index de maquina
+    """
+    max_indexes = []
+    max_value = max(x.makespan for x in sequences_list)
+    for index, element in enumerate(sequences_list):
+        if max_value == element.makespan:  # check if this element is the minimum_value
+            max_indexes.append(index)  # add the index to the list if it is
+
+    return max_indexes
+
+
+def get_min_sequences(sequences_list):
+    """
+    Obtener la maquina con secuencia de ejecucion maxima y su indice
+    :param machines_list: lista de Maquinas
+    :return: Maquina, index de maquina
+    """
+    min_indexes = []
+    min_value = min(x.makespan for x in sequences_list)
+    for index, element in enumerate(sequences_list):
+        if min_value == element.makespan:  # check if this element is the minimum_value
+            min_indexes.append(index)  # add the index to the list if it is
+
+    return min_indexes

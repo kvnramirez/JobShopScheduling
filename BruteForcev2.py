@@ -4,8 +4,9 @@ import itertools
 import time
 from operator import attrgetter
 
-from Classes import Job, Sequence, Machine
+from Classes import Job, Solution, Machine
 from instances import i1, i2, i3
+from utils import get_max_sequences
 
 
 def create_jobs(input):
@@ -65,21 +66,6 @@ def get_min_duration_machine(machines_list):
         min(machines_list, key=attrgetter('total_duration')))
 
 
-def get_max_sequences(sequences_list):
-    """
-    Obtener la maquina con secuencia de ejecucion maxima y su indice
-    :param machines_list: lista de Maquinas
-    :return: Maquina, index de maquina
-    """
-    max_indexes = []
-    max_value = max(x.makespan for x in sequences_list)
-    for index, element in enumerate(sequences_list):
-        if max_value == element.makespan:  # check if this element is the minimum_value
-            max_indexes.append(index)  # add the index to the list if it is
-
-    return max_indexes
-
-
 def main():
     start = time.time()
     print("Job Shop Scheduling con Fuerza Bruta")
@@ -112,7 +98,7 @@ def main():
     sequence_count = 1
     for sequence in sequence_combinations:
         # Crear posibles secuencias
-        new_sequence = Sequence(sequence_count)
+        new_sequence = Solution(sequence_count)
         for m_senquence in sequence:
             # Crear maquinas necesarias para cada secuencia
             new_machine = Machine(m_senquence[0].machine_id)

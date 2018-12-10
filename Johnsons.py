@@ -6,7 +6,7 @@ from operator import attrgetter
 
 from Classes import Machine, Solution
 from instances import i3, i2, i1, i4
-from utils import create_jobs, get_jobs_by_machine
+from utils import create_jobs, get_jobs_by_machine, get_min_sequences
 
 
 def get_min_job(jobs_list):
@@ -29,7 +29,7 @@ def main():
     print("Job Shop Scheduling con Algoritmo de Johnson")
 
     # i2, i3, i1
-    input_matrix = i3
+    input_matrix = i2
     machines_number = len(input_matrix)
     jobs_number = len(input_matrix[0])
 
@@ -206,7 +206,33 @@ def main():
         # Agregar solucion a la lista
         solutions.append(new_solution)
 
-    print("soluciones: ", solutions)
+    # Calcular duracion de trabajos de cada maquina
+
+    print(solutions)
+
+    print("~~~~~~~~~~~~~~~~~~~~~~~~")
+    print("Calculando duraciones de cada secuencia de maquinas y de cada trabajo...")
+    for solution in solutions:
+        durations = []
+        for machine in solution.machines:
+            print("machine.total_duration: ", machine.total_duration)
+
+            for jobs_sequence in machine.jobs:
+                end_times = []
+                for job in jobs_sequence:
+                    end_times.append(job.end_time)
+                print("Maquina %s, %s" % (machine.id, end_times))
+                machine.total_duration = max(end_times)
+                print("machine.total_duration: ", machine.total_duration)
+            durations.append(machine.total_duration)
+        print("durations: ", durations)
+        solution.makespan = max(durations)
+
+    print("~~~~~~~~~~~~~~~~~~~~~~~~")
+    print("Mostrando mejores calendarizaciones...")
+    print("Total mejores calendarizaciones: ", len(get_min_sequences(solutions)))
+    for y in get_min_sequences(solutions):
+        print(solutions[y])
 
     end = time.time()
     print("\nTiempo de ejecucion del programa: %d ms " % ((end - start) * 1000))
