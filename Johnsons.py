@@ -4,6 +4,7 @@ import itertools
 import time
 from operator import attrgetter
 
+from Classes import Machine, Solution
 from instances import i3
 from utils import create_jobs, get_jobs_by_machine
 
@@ -16,6 +17,11 @@ def get_min_job(jobs_list):
         """
     return min(jobs_list, key=attrgetter('duration')), jobs_list.index(
         min(jobs_list, key=attrgetter('duration')))
+
+
+def get_job_by_machine_and_job_id(jobs_list, job_id, machine_id):
+    filter_1 = [x for x in jobs_list if x.id == job_id]
+    return [x for x in filter_1 if x.machine_id == machine_id]
 
 
 def main():
@@ -37,7 +43,13 @@ def main():
     range_permutations = list(itertools.permutations(m_range))
     print("range permutations: ", range_permutations)
 
+    solutions = []
+    solution_counter = 0
     for range_permutation in range_permutations:
+
+        new_solution = Solution(solution_counter)
+        solution_counter = solution_counter + 1
+
         temp_matrix = []
         for i in m_range:
             temp_matrix.append(copy.deepcopy(get_jobs_by_machine(i, list_jobs)))
@@ -74,8 +86,46 @@ def main():
         print("right: ", right)
 
         print("secuencia: ", left + right)
+        job_sequence = left + right
+
+        start = 0
+        next_start_per_machine = [0 for m in m_range]
+        print("next_start_per_machine", next_start_per_machine)
+
+        machines_list = []
+        # for machine in m_range:
+        #     machines_list.append(Machine())
+
+        for machine in m_range:
+            new_machine = Machine(machine)
+            for job in job_sequence:
+                temp_job = get_job_by_machine_and_job_id(list_jobs, job, machine)
+                new_machine.jobs.append(temp_job)
+            print("new_machine: ", new_machine)
+            new_solution.machines.append(new_machine)
+
+        # for job in job_sequence:
+        #     end = 0
+        #     iteration_counter = 0
+        #     for machine in m_range:
+        #         temp_job = get_job_by_machine_and_job_id(list_jobs, job, machine)
+        #         if temp_job:
+        #
+        #             temp_job[0].start_time = next_start_per_machine[machine]
+        #             temp_job[0].end_time = next_start_per_machine[machine] + temp_job[0].duration
+        #             next_start_per_machine[machine] = temp_job[0].end_time + next_start_per_machine[machine]
+        #             next_start_per_machine = [temp_job[0].end_time for m in m_range]
+        #             iteration_counter = iteration_counter + 1
+        #         print("temp job: ", temp_job[0])
+        #         print("next_start_per_machine", next_start_per_machine)
+
+        # start = next_start
 
         # Calcular solucion
+
+        solutions.append(new_solution)
+
+    print("soluciones: ", solutions)
 
     end = time.time()
     print("\nTiempo de ejecucion del programa: %d ms " % ((end - start) * 1000))

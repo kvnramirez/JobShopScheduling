@@ -19,6 +19,7 @@ class Machine:
         self.id = id
         self.jobs = []
         self.total_duration = total_duration
+        self.next_start = 0
 
     def __repr__(self):
         return '\n-Maquina %s, duracion secuencia: %s, trabajos: %s' % (self.id, self.total_duration, self.jobs)
