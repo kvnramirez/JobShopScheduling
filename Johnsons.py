@@ -88,9 +88,9 @@ def main():
         print("secuencia: ", left + right)
         job_sequence = left + right
 
-        start = 0
-        next_start_per_machine = [0 for m in m_range]
-        print("next_start_per_machine", next_start_per_machine)
+        # start = 0
+        # next_start_per_machine = [0 for m in m_range]
+        # print("next_start_per_machine", next_start_per_machine)
 
         machines_list = []
         # for machine in m_range:
@@ -100,9 +100,22 @@ def main():
             new_machine = Machine(machine)
             for job in job_sequence:
                 temp_job = get_job_by_machine_and_job_id(list_jobs, job, machine)
-                new_machine.jobs.append(temp_job)
+                new_machine.jobs.append(copy.deepcopy(temp_job))
             print("new_machine: ", new_machine)
             new_solution.machines.append(new_machine)
+
+        # Calcular solucion
+        x_counter = 0
+        for machine in new_solution.machines:
+            if x_counter == 0:
+                start = 0
+                for job in machine.jobs:
+                    job[0].start_time = start
+                    job[0].end_time = job[0].start_time + job[0].duration
+                    print("mx job: ", job[0])
+                    start = job[0].end_time
+            x_counter = x_counter + 1
+            print("mx: ", machine)
 
         # for job in job_sequence:
         #     end = 0
@@ -121,8 +134,7 @@ def main():
 
         # start = next_start
 
-        # Calcular solucion
-
+        # Agregar solucion a la lista
         solutions.append(new_solution)
 
     print("soluciones: ", solutions)
