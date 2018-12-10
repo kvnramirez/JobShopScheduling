@@ -29,7 +29,7 @@ def main():
     print("Job Shop Scheduling con Algoritmo de Johnson")
 
     # i2, i3, i1
-    input_matrix = i4
+    input_matrix = i3
     machines_number = len(input_matrix)
     jobs_number = len(input_matrix[0])
 
@@ -63,19 +63,24 @@ def main():
         for i in range_permutation:
             print("machine for min job: ", i)
             print("new temp matrix: ", temp_matrix)
+            print("new temp matrix count: ", len(temp_matrix))
             min_job, min_job_index = get_min_job(temp_matrix[i])
             if (counter % 2) == 0:
                 print("{0} is Even, right set".format(i))
-                print(temp_matrix[i])
+                print("xx: ", temp_matrix[i])
                 left.append(min_job.id)
                 print("updated left: ", left)
             else:
                 print("{0} is Odd, left set".format(i))
-                print(temp_matrix[i])
+                print("yy: ", temp_matrix[i])
                 right.append(min_job.id)
                 print("updated right: ", right)
             counter = counter + 1
-            del temp_matrix[i][min_job_index]
+            for ii in range_permutation:
+                print("ii: ", ii)
+                del temp_matrix[ii][min_job_index]
+
+            print("min_job_index: ", min_job_index)
             print("-------------")
 
         # Ordenar de manera descendente
@@ -147,7 +152,7 @@ def main():
                     print("c2[i][0].id : ", c2[i][0].id)
                     print("c2[i][0].start_time : ", c2[i][0].start_time)
                     print("c2[i][0].end_time : ", c2[i][0].end_time)
-                    print("c1[i][0].end_time - s: ",c1[i][0].end_time - s)
+                    print("c1[i][0].end_time - s: ", c1[i][0].end_time - s)
                     if c1[i][0].end_time - s > 0:
                         c2[i][0].start_time = c1[i][0].end_time
                         c2[i][0].end_time = c2[i][0].start_time + c2[i][0].duration
