@@ -119,7 +119,7 @@ def main():
     minimalJobshopSat(jobs_data)
 
     t1 = time.clock() - t0
-    print("\nTiempo de ejecucion del programa: %s ms " % (t1 - t0))  # CPU seconds elapsed (floating point)
+    print("\nTiempo de ejecucion del programa: %s s " % (t1 - t0))  # CPU seconds elapsed (floating point)
 
 
 if __name__ == "__main__":

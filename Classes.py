@@ -11,6 +11,17 @@ class Solution:
     def __repr__(self):
         return '\n->Sequencia %s , makespan: %s,\n-->maquinas: %s' % (self.id, self.makespan, self.machines)
 
+class Sequence:
+    """ Clase que almacena las soluciones posibles de las maquinas """
+
+    def __init__(self, id, makespan=0):
+        self.id = id
+        self.machines = []
+        self.makespan = makespan
+
+    def __repr__(self):
+        return '\n->Sequencia %s , makespan: %s,\n-->maquinas: %s' % (self.id, self.makespan, self.machines)
+
 
 class Machine:
     """ Clase que almacena maquinas y su secuencia """

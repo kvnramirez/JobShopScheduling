@@ -61,7 +61,7 @@ def get_min_sequences(sequences_list):
     :return: Maquina, index de maquina
     """
     m_indexes = []
-    m_value = max(x.makespan for x in sequences_list)
+    m_value = min(x.makespan for x in sequences_list)
     for index, element in enumerate(sequences_list):
         if m_value == element.makespan:  # check if this element is the minimum_value
             m_indexes.append(index)  # add the index to the list if it is
@@ -84,7 +84,7 @@ def main():
     print("Job Shop Scheduling con Fuerza Bruta")
 
     # i2, i3, i1
-    input_matrix = i3
+    input_matrix = i2
     machines_number = len(input_matrix)
     jobs_number = len(input_matrix[0])
 
@@ -252,7 +252,7 @@ def main():
     #     print(sequences_list[y])
 
     t1 = time.clock() - t0
-    print("\nTiempo de ejecucion del programa: %s ms " % (t1 - t0))  # CPU seconds elapsed (floating point)
+    print("\nTiempo de ejecucion del programa: %s s " % (t1 - t0))  # CPU seconds elapsed (floating point)
     # print("\nTiempo de ejecucion del programa: %d s " % ((end - start)))
 
 
