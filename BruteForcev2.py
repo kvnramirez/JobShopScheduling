@@ -6,7 +6,6 @@ from operator import attrgetter
 
 from Classes import Job, Solution, Machine
 from instances import i1, i2, i3, i5
-from utils import get_max_sequences, get_min_sequences
 
 
 def create_jobs(input):
@@ -54,6 +53,20 @@ def sum_jobs_and_min_index(machine):
             sum = sum + elem.duration
         sum_each.append(sum)
         machine.total_duration = sum
+
+
+def get_min_sequences(sequences_list):
+    """
+    :param machines_list: lista de Maquinas
+    :return: Maquina, index de maquina
+    """
+    m_indexes = []
+    m_value = max(x.makespan for x in sequences_list)
+    for index, element in enumerate(sequences_list):
+        if m_value == element.makespan:  # check if this element is the minimum_value
+            m_indexes.append(index)  # add the index to the list if it is
+
+    return m_indexes
 
 
 def get_min_duration_machine(machines_list):
@@ -109,7 +122,8 @@ def main():
         sequences_list.append(new_sequence)
         sequence_count = sequence_count + 1
 
-    print(sequences_list)
+    if len(sequences_list) < 10:
+        print(sequences_list)
 
     print("\nCalendarizando secuencias... ")
     # Almacenar suma de jobs de cada secuencia de cada maquina
@@ -215,12 +229,11 @@ def main():
         durations = []
         for machine in sequence.machines:
 
-
             for jobs_sequence in machine.jobs:
                 end_times = []
                 for job in jobs_sequence:
                     end_times.append(job.end_time)
-                print("Maquina %s, %s" % (machine.id, end_times))
+                # print("Maquina %s, %s" % (machine.id, end_times))
                 machine.total_duration = max(end_times)
             durations.append(machine.total_duration)
         sequence.makespan = max(durations)
@@ -228,8 +241,15 @@ def main():
     print("~~~~~~~~~~~~~~~~~~~~~~~~")
     print("Mostrando mejores calendarizaciones...")
     print("Total mejores calendarizaciones: ", len(get_min_sequences(sequences_list)))
-    for y in get_min_sequences(sequences_list):
-        print(sequences_list[y])
+
+    if len(get_min_sequences(sequences_list)) > 0:
+        print("Mostrando primer solucion: ")
+        print(sequences_list[get_min_sequences(sequences_list)[0]])
+    else:
+        print("No hay solucion")
+
+    # for y in get_min_sequences(sequences_list):
+    #     print(sequences_list[y])
 
     t1 = time.clock() - t0
     print("\nTiempo de ejecucion del programa: %s ms " % (t1 - t0))  # CPU seconds elapsed (floating point)
