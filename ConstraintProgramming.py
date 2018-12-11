@@ -12,8 +12,7 @@ from instances import i3, i1, i2, i5
 
 
 def minimalJobshopSat(jobs_data):
-    """Minimal jobshop problem."""
-    # Create the model.
+    # Crear el modelo para el solver
     model = cp_model.CpModel()
 
     machines_count = 1 + max(task[0] for job in jobs_data for task in job)
@@ -21,7 +20,7 @@ def minimalJobshopSat(jobs_data):
     jobs_count = len(jobs_data)
     all_jobs = range(jobs_count)
 
-    # Compute horizon.
+    # Calcular la suma de todos los tiempos de procesamiento de cada maquina
     horizon = sum(task[1] for job in jobs_data for task in job)
 
     task_type = collections.namedtuple('task_type', 'start end interval')
@@ -53,8 +52,7 @@ def minimalJobshopSat(jobs_data):
     # Add precedence contraints.
     for job in all_jobs:
         for task_id in range(0, len(jobs_data[job]) - 1):
-            model.Add(all_tasks[job, task_id +
-                                1].start >= all_tasks[job, task_id].end)
+            model.Add(all_tasks[job, task_id + 1].start >= all_tasks[job, task_id].end)
 
     # Makespan objective.
     obj_var = model.NewIntVar(0, horizon, 'makespan')
@@ -117,7 +115,7 @@ def minimalJobshopSat(jobs_data):
 def main():
     print("Job Shop Scheduling con Constraint Programming")
     t0 = time.clock()
-    jobs_data = i2
+    jobs_data = i3
     minimalJobshopSat(jobs_data)
 
     t1 = time.clock() - t0

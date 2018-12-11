@@ -83,7 +83,7 @@ def main():
             print("min_job_index: ", min_job_index)
             print("-------------")
 
-        # Ordenar de manera descendente
+        # Ordenar de manera descendente, se reduce a una sola solucion
         # left.sort(reverse=True)
         # right.sort(reverse=True)
 
@@ -92,14 +92,6 @@ def main():
 
         print("secuencia: ", left + right)
         job_sequence = left + right
-
-        # start = 0
-        # next_start_per_machine = [0 for m in m_range]
-        # print("next_start_per_machine", next_start_per_machine)
-
-        machines_list = []
-        # for machine in m_range:
-        #     machines_list.append(Machine())
 
         for machine in m_range:
             new_machine = Machine(machine)
@@ -168,40 +160,6 @@ def main():
                     print("-----------------")
                 print("c1: ", c1[i][0])
                 print("c2: ", c2[i][0])
-
-        # for i in range(len(new_solution.machines)):
-        #     print("www: ", new_solution.machines[c_counter - 1])
-        #     for x_job in new_solution.machines[c_counter - 1].jobs:
-        #         start = 0
-        #         elem_count = 0
-        #         for y_job in new_solution.machines[c_counter].jobs:
-        #             if x_job[0].id == y_job[0].id:
-        #                 if elem_count == 0:
-        #                     y_job[0].start_time = x_job[0].end_time
-        #                     y_job[0].end_time = y_job[0].start_time + y_job[0].duration
-        #                     start = y_job[0].end_time
-        #                     print("start: ", start)
-        #                 else:
-        #                     print("elem_count: ", elem_count)
-        #                     print("x start: ", start)
-        #             elem_count = elem_count + 1
-
-        # for job in job_sequence:
-        #     end = 0
-        #     iteration_counter = 0
-        #     for machine in m_range:
-        #         temp_job = get_job_by_machine_and_job_id(list_jobs, job, machine)
-        #         if temp_job:
-        #
-        #             temp_job[0].start_time = next_start_per_machine[machine]
-        #             temp_job[0].end_time = next_start_per_machine[machine] + temp_job[0].duration
-        #             next_start_per_machine[machine] = temp_job[0].end_time + next_start_per_machine[machine]
-        #             next_start_per_machine = [temp_job[0].end_time for m in m_range]
-        #             iteration_counter = iteration_counter + 1
-        #         print("temp job: ", temp_job[0])
-        #         print("next_start_per_machine", next_start_per_machine)
-
-        # start = next_start
 
         # Agregar solucion a la lista
         solutions.append(new_solution)
