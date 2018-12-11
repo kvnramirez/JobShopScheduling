@@ -27,7 +27,7 @@ def minimalJobshopSat(jobs_data):
     assigned_task_type = collections.namedtuple('assigned_task_type',
                                                 'start job index')
 
-    # Create jobs.
+    # Crear todos los trabajos con la matriz de entrada
     all_tasks = {}
     for job in all_jobs:
         for task_id, task in enumerate(jobs_data[job]):
@@ -40,7 +40,7 @@ def minimalJobshopSat(jobs_data):
             all_tasks[job, task_id] = task_type(
                 start=start_var, end=end_var, interval=interval_var)
 
-    # Create and add disjunctive constraints.
+    # Crear los contraints
     for machine in all_machines:
         intervals = []
         for job in all_jobs:
@@ -49,28 +49,28 @@ def minimalJobshopSat(jobs_data):
                     intervals.append(all_tasks[job, task_id].interval)
         model.AddNoOverlap(intervals)
 
-    # Add precedence contraints.
+    # Agregar constraints de precedencia, indican donde puede empezar cada trabajo
     for job in all_jobs:
         for task_id in range(0, len(jobs_data[job]) - 1):
             model.Add(all_tasks[job, task_id + 1].start >= all_tasks[job, task_id].end)
 
-    # Makespan objective.
+    # Estabelcer objetivo de makespan.
     obj_var = model.NewIntVar(0, horizon, 'makespan')
     model.AddMaxEquality(
         obj_var,
         [all_tasks[(job, len(jobs_data[job]) - 1)].end for job in all_jobs])
     model.Minimize(obj_var)
 
-    # Solve model.
+    # Resolver modelo para obtener solucion
     solver = cp_model.CpSolver()
     status = solver.Solve(model)
 
     if status == cp_model.OPTIMAL:
-        # Print out makespan.
+        # El makespan obtenido es optimo
         print('Makespan optimo: %i' % solver.ObjectiveValue())
         print()
 
-        # Create one list of assigned tasks per machine.
+        # Crear una lista te trabajos asignados por maquina
         assigned_jobs = [[] for _ in all_machines]
         for job in all_jobs:
             for task_id, task in enumerate(jobs_data[job]):
@@ -88,20 +88,20 @@ def minimalJobshopSat(jobs_data):
         print('Calendarización optima', '\n')
 
         for machine in all_machines:
-            # Sort by starting time.
+            # Mostrar maquinas por orden de inicio
             assigned_jobs[machine].sort()
             sol_line += 'Maquina ' + str(machine) + ': '
             sol_line_tasks += 'Maquina ' + str(machine) + ': '
 
             for assigned_task in assigned_jobs[machine]:
                 name = 'job_%i_%i' % (assigned_task.job, assigned_task.index)
-                # Add spaces to output to align columns.
+                # Agregar espacios a la salida para formatear el print en pantalla
                 sol_line_tasks += name + ' ' * (disp_col_width - len(name))
                 start = assigned_task.start
                 duration = jobs_data[assigned_task.job][assigned_task.index][1]
 
                 sol_tmp = '[%i,%i]' % (start, start + duration)
-                # Add spaces to output to align columns.
+                # Agregar espacios a la salida para formatear el print en pantalla
                 sol_line += sol_tmp + ' ' * (disp_col_width - len(sol_tmp))
 
             sol_line += '\n'
