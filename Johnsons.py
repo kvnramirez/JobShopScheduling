@@ -231,8 +231,15 @@ def main():
     print("~~~~~~~~~~~~~~~~~~~~~~~~")
     print("Mostrando mejores calendarizaciones...")
     print("Total mejores calendarizaciones: ", len(get_min_sequences(solutions)))
-    for y in get_min_sequences(solutions):
-        print(solutions[y])
+
+    if len(get_min_sequences(solutions)) > 0:
+        print("Mostrando primer solucion: ")
+        print(solutions[get_min_sequences(solutions)[0]])
+    else:
+        print("No hay solucion")
+
+    # for y in get_min_sequences(solutions):
+    #     print(solutions[y])
 
     t1 = time.clock() - t0
     print("\nTiempo de ejecucion del programa: %s ms " % (t1 - t0))  # CPU seconds elapsed (floating point)
