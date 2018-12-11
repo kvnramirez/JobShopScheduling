@@ -69,7 +69,7 @@ def minimalJobshopSat(jobs_data):
 
     if status == cp_model.OPTIMAL:
         # Print out makespan.
-        print('Optimal Schedule Length: %i' % solver.ObjectiveValue())
+        print('Makespan optimo: %i' % solver.ObjectiveValue())
         print()
 
         # Create one list of assigned tasks per machine.
@@ -87,13 +87,13 @@ def minimalJobshopSat(jobs_data):
         sol_line = ''
         sol_line_tasks = ''
 
-        print('Optimal Schedule', '\n')
+        print('Calendarización optima', '\n')
 
         for machine in all_machines:
             # Sort by starting time.
             assigned_jobs[machine].sort()
-            sol_line += 'Machine ' + str(machine) + ': '
-            sol_line_tasks += 'Machine ' + str(machine) + ': '
+            sol_line += 'Maquina ' + str(machine) + ': '
+            sol_line_tasks += 'Maquina ' + str(machine) + ': '
 
             for assigned_task in assigned_jobs[machine]:
                 name = 'job_%i_%i' % (assigned_task.job, assigned_task.index)
@@ -110,14 +110,14 @@ def minimalJobshopSat(jobs_data):
             sol_line_tasks += '\n'
 
         print(sol_line_tasks)
-        print('Task Time Intervals\n')
+        print('Intervalos de tiempo para cada trabajo\n')
         print(sol_line)
 
 
 def main():
     print("Job Shop Scheduling con Constraint Programming")
     t0 = time.clock()
-    jobs_data = i5
+    jobs_data = i2
     minimalJobshopSat(jobs_data)
 
     t1 = time.clock() - t0

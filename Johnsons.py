@@ -29,7 +29,7 @@ def main():
     print("Job Shop Scheduling con Algoritmo de Johnson")
 
     # i2, i3, i1
-    input_matrix = i5
+    input_matrix = i2
     machines_number = len(input_matrix)
     jobs_number = len(input_matrix[0])
 
